@@ -1,0 +1,19 @@
+# Editors:
+.idea
+*.iml
+
+# Vendor:
+node_modules
+
+# Optional npm cache directory
+.npm
+
+# Logs:
+logs
+*.log
+
+# statics
+public/*
+
+# env_file
+*.env

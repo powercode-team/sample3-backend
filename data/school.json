@@ -1,0 +1,55 @@
+[
+  {
+    "name": "Deep Run High School",
+    "street": "4801 Twin Hickory Road",
+    "address": "Glen Allen, Va. 23059",
+    "tel": "804-364-8000"
+  },
+  {
+    "name": "Douglas S. Freeman High School",
+    "street": "8701 Three Chopt Road",
+    "address": "Henrico, Va. 23229",
+    "tel": "804-673-3700"
+  },
+  {
+    "name": "Glen Allen High School",
+    "street": "10700 Staples Mill Road",
+    "address": "Glen Allen, Va. 23060",
+    "tel": "804-501-3300"
+  },
+  {
+    "name": "Mills E. Godwin High School",
+    "street": "2101 Pump Road",
+    "address": "Henrico, Va. 23238",
+    "tel": "804-750-2600"
+  },
+  {
+    "name": "Henrico High School",
+    "street": "302 Azalea Ave.",
+    "address": "Henrico, Va. 23227"
+  },
+  {
+    "name": "Hermitage High School",
+    "street": "8301 Hungary Spring Road",
+    "address": "Henrico, Va. 23228",
+    "tel": "804-756-3000"
+  },
+  {
+    "name": "Highland Springs High School",
+    "street": "15 S. Oak Ave.",
+    "address": "Highland Springs, Va. 23075",
+    "tel": "804-328-4000"
+  },
+  {
+    "name": "J.R. Tucker High School",
+    "street": "2910 Parham Road",
+    "address": "Henrico, Va. 23294",
+    "tel": "804-527-4600"
+  },
+  {
+    "name": "Varina High School",
+    "street": "7053 Messer Road",
+    "address": "Henrico, Va. 23231",
+    "tel": "804-226-8700"
+  }
+]

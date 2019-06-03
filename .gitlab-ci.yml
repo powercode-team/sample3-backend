@@ -1,0 +1,16 @@
+
+dev:
+  only:
+  - master
+  script:
+  - git reset --hard HEAD
+  - git checkout master -f
+  - git pull origin master
+  - npm i;
+  - cp ~/env/one-benefactor-api/.env ./
+  - pm2 restart index;
+  - pm2 reset index;
+  stage: master
+
+stages:
+- master

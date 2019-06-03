@@ -1,0 +1,608 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Docs for API",
+    "version": "0.0.1",
+    "title": "API Routes"
+  },
+  "basePath": "/api/v1",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "tags": [],
+  "securityDefinitions": {
+    "bearer": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
+  "paths": {
+    "/token": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Login",
+        "operationId": "token-create",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "required": true
+                },
+                "password": {
+                  "type": "string",
+                  "required": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "number"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "companyName": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "string"
+                    },
+                    "billingAddress": {
+                      "type": "string"
+                    },
+                    "school": {
+                      "type": "string"
+                    },
+                    "volunteerActivity": {
+                      "type": "number"
+                    },
+                    "ein": {
+                      "type": "string"
+                    },
+                    "gender": {
+                      "type": "string",
+                      "enum": [
+                        "male",
+                        "female",
+                        "other"
+                      ],
+                      "example": "male"
+                    },
+                    "isApproved": {
+                      "type": "boolean"
+                    },
+                    "projectsCount": {
+                      "type": "number"
+                    },
+                    "followersCount": {
+                      "type": "number"
+                    },
+                    "followingCount": {
+                      "type": "number"
+                    },
+                    "createdAt": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "token":{
+                  "type": "object",
+                  "properties": {
+                    "hash": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "403": {
+            "description": "Email is not verified, but send",
+            "$ref": "#/responses/Forbidden"
+          },
+          "412": {
+            "description": "Precondition failed. Email is verified but need to fill up user data. Use this verifyToken and another data to create user",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "verifyToken": {
+                  "type": "string"
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Logout",
+        "operationId": "token-delete",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "202": {
+            "$ref": "#/responses/Success"
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/token/request": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Sign up request",
+        "description": "# **Description:** Saves email, password hash and user role. \nPlease note that same email will cause duplicate error. \nRequest token has only **14 day lifetime**",
+        "operationId": "token-request",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "required": true
+                },
+                "password": {
+                  "type": "string",
+                  "required": true
+                },
+                "role": {
+                  "type": "number",
+                  "description": "Valid roles: business(**2**), nonProfit(**3**), donor(**4**), student(**5**)",
+                  "required": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "$ref": "#/responses/Success"
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "409": {
+            "$ref": "#/responses/DuplicateRecourse"
+          }
+        }
+      }
+    },
+    "/token/request/resend/{email}": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Resend request token",
+        "description": "# **Description:** Create new and delete old request",
+        "operationId": "token-request-resend",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "description": "Email",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "$ref": "#/responses/Success"
+          },
+          "400": {
+            "$ref": "#/responses/ValidationError"
+          },
+          "404": {
+            "description": "Must be in requests but don't confirm",
+            "$ref": "#/responses/NotFound"
+          }
+        }
+      }
+    }
+
+  },
+  "responses": {
+    "ValidationError": {
+      "type": "object",
+      "description": "Validation error",
+      "properties": {
+        "error": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "property": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Success": {
+      "type": "object",
+      "description": "Accepted",
+      "properties": {
+      }
+    },
+    "NotFound": {
+      "type": "object",
+      "description": "Not Found",
+      "properties": {
+        "error": {
+          "properties": {
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "Forbidden": {
+      "type": "object",
+      "description": "Access Denied",
+      "properties": {
+        "error": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "Unauthorized": {
+      "type": "object",
+      "description": "Unauthorized",
+      "properties": {
+        "error": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "DuplicateRecourse": {
+      "type": "object",
+      "description": "Unauthorized",
+      "properties": {
+        "error": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Roles": {
+      "properties": {
+        "0": {
+          "type": "string",
+          "description": "`admin`"
+        },
+        "1": {
+          "type": "string",
+          "description": "`default`"
+        },
+        "2": {
+          "type": "string",
+          "description": "`business`"
+        },
+        "3": {
+          "type": "string",
+          "description": "`nonProfit`"
+        },
+        "4": {
+          "type": "string",
+          "description": "`donor`"
+        },
+        "5": {
+          "type": "string",
+          "description": "`student`"
+        },
+        "6": {
+          "type": "string",
+          "description": "`subAccount`"
+        }
+      }
+    },
+    "User": {
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "birthDate": {
+          "type": "number"
+        },
+        "companyName": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "ein": {
+          "type": "string"
+        },
+        "billingAddress": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "school": {
+          "type": "string"
+        },
+        "avatar": {
+          "type": "string"
+        },
+        "isApproved": {
+          "type": "boolean"
+        },
+        "role": {
+          "type": "number"
+        },
+        "volunteerActivity": {
+          "type": "number",
+          "description": "Timestamp in seconds"
+        },
+        "createdAt": {
+          "type": "number"
+        }
+      }
+    },
+    "ProjectTypes": {
+      "properties": {
+        "0": {
+          "type": "string",
+          "description": "`volunteer`"
+        },
+        "1": {
+          "type": "string",
+          "description": "`money`"
+        },
+        "2": {
+          "type": "string",
+          "description": "`pickup`"
+        }
+      }
+    },
+    "Needs": {
+      "properties": {
+        "_id": {
+        "type": "string"
+      },
+        "project": {
+          "$ref": "#/definitions/Project"
+        },
+        "value": {
+          "type": "string"
+        },
+        "current": {
+          "type": "number"
+        },
+        "type": {
+          "type": "number",
+          "description": "Same as project type"
+        },
+        "of": {
+          "type": "number"
+        },
+        "createdAt": {
+          "type": "number"
+        }
+      }
+    },
+    "NeedsParticipants": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "project": {
+          "$ref": "#/definitions/User"
+        },
+        "need": {
+          "$ref": "#/definitions/User"
+        },
+        "activeHours": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "number"
+        }
+      }
+    },
+    "Location": {
+      "properties": {
+        "geo": {
+          "type": "array",
+          "description": " 1) longitude. 2) latitude ",
+          "items": {
+            "type": "number"
+          },
+          "example": [
+            0,
+            0
+          ]
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Project": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        },
+        "projectType": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "enum": [
+              0,
+              1,
+              2
+            ]
+          }
+        },
+        "description": {
+          "description": "description types : { 0 - text, 1 - image }",
+          "type": "array",
+          "items": {
+            "properties":{
+              "value": {
+                "type": "string"
+              },
+              "type": {
+                "type": "number",
+                "enum": [
+                  0,
+                  1
+                ],
+                "example": 0
+              }
+            }
+          }
+        },
+        "needs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Needs"
+          }
+        },
+        "cover": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "number",
+          "description": "UNIX Timestamp"
+        },
+        "endDate": {
+          "type": "number",
+          "description": "UNIX Timestamp"
+        },
+        "location": {
+          "$ref": "#/definitions/Location"
+        }
+      }
+    },
+    "School": {
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "street": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "tel": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
