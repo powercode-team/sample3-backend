@@ -32,7 +32,7 @@
     "md5": "2.2.1",
     "mkdirp": "0.5.1",
     "mockgoose": "7.3.5",
-    "moment": "2.22.2",
+    "moment": "2.29.2",
     "moment-timezone": "0.5.23",
     "mongoose": "5.3.6",
     "morgan": "1.9.1",
