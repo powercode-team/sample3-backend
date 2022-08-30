@@ -33,7 +33,7 @@
     "mkdirp": "0.5.1",
     "mockgoose": "7.3.5",
     "moment": "2.22.2",
-    "moment-timezone": "0.5.23",
+    "moment-timezone": "0.5.35",
     "mongoose": "5.3.6",
     "morgan": "1.9.1",
     "node-memwatch": "1.0.1",
