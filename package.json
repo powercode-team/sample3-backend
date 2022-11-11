@@ -40,7 +40,7 @@
     "nodemailer": "4.7.0",
     "nodemailer-sendgrid": "1.0.3",
     "rimraf": "2.6.2",
-    "socket.io": "2.1.1",
+    "socket.io": "2.5.0",
     "swagger-ui-express": "4.0.1"
   },
   "devDependencies": {
